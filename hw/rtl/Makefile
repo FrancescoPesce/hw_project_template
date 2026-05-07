@@ -22,38 +22,49 @@
 
 ECHO=@echo
 
-.PHONY: all help
+.PHONY: help clean xo
 
 PLATFORM := xilinx_u250_gen3x16_xdma_4_1_202210_1
 DEVICE := xcu250-figd2104-2L-e
-TARGET := hw_emu
-FREQUENCY := 200
-
-XCLBIN  := overlay_$(TARGET).xclbin
-
-all: $(XCLBIN)
-
+KERNEL := passthrough_rtl
+	
 help:
 	$(ECHO) "Makefile Usage:"
-	$(ECHO) "  make all"
+	$(ECHO) ""
+	$(ECHO) "  make xo"
+	$(ECHO) "      Generate the xo kernel file."
 	$(ECHO) ""
 	$(ECHO) "  make clean"
 	$(ECHO) "      Remove all the generated files."
-	$(ECHO) ""
 
-# Use --optimize 3 to enable post-route optimizations. This may improve the bitstream but SIGNIFICANTLY increase compilation time
-XOCCLFLAGS := --kernel_frequency $(FREQUENCY) -s -g
-CONFIG     := xclbin_overlay.cfg
 
-XOS := 
-XOS += $(abspath ../hw/hls/build/$(TARGET)/mem2stream.xo)
-XOS += $(abspath ../hw/hls/build/$(TARGET)/stream2mem.xo)
-XOS += $(abspath ../hw/rtl/build/package/passthrough_rtl.xo)
 
-$(XCLBIN): $(XOS)
-	mkdir -p build
-	cd build; \
-		v++ -l $(XOCCLFLAGS) --config ../$(CONFIG) -t $(TARGET) -f $(PLATFORM) $(XOS) -o $(XCLBIN)
+KERNEL_SRC     := src/$(KERNEL).v
 
+################## Vitis build
+
+KERNEL_XO_BASE := $(KERNEL).xo
+PACKAGING_DIR := build/package
+KERNEL_XO := $(PACKAGING_DIR)/$(KERNEL_XO_BASE)
+
+PACKAGING_PROJ_NAME := $(KERNEL)_prj
+PACKAGING_PROJ_DIR := $(PACKAGING_DIR)/$(PACKAGING_PROJ_NAME)
+
+# Prepare project directory for Vivado, as expected by the build.tcl script.
+$(PACKAGING_PROJ_DIR): $(KERNEL_SRC)
+	@mkdir -p $(PACKAGING_PROJ_DIR)
+	cp $(KERNEL_SRC) $(PACKAGING_PROJ_DIR)
+	cp build.tcl $(PACKAGING_DIR);
+
+# Create a .xo for the RTL kernel.
+$(KERNEL_XO): $(PACKAGING_PROJ_DIR)
+	@cd $(PACKAGING_DIR); \
+	    CMD="vivado -mode batch -source build.tcl -tclargs $(KERNEL) $(PACKAGING_PROJ_NAME) $(DEVICE)"; \
+	    echo $$CMD; \
+	    $$CMD
+
+xo: $(KERNEL_XO)
+
+################## clean up
 clean:
 	$(RM) -rf build

@@ -1,0 +1,86 @@
+#-----------------------------------------------------------
+# Vivado v2023.1.2 (64-bit)
+# SW Build 3954437 on Wed Aug  9 23:05:19 MDT 2023
+# IP Build 3954312 on Thu Aug 10 04:10:56 MDT 2023
+# SharedData Build 3952698 on Tue Aug 08 21:36:00 MDT 2023
+# Start of session at: Wed Apr 29 14:24:00 2026
+# Process ID: 189891
+# Current directory: /home/francesco.pesce/hw_project_template/hw/rtl/build/package
+# Command line: vivado -mode batch -source build.tcl -tclargs passthrough_rtl passthrough_rtl_prj xcu250-figd2104-2L-e
+# Log file: /home/francesco.pesce/hw_project_template/hw/rtl/build/package/vivado.log
+# Journal file: /home/francesco.pesce/hw_project_template/hw/rtl/build/package/vivado.jou
+# Running On: arch-shared, OS: Linux, CPU Frequency: 2100.000 MHz, CPU Physical cores: 32, Host memory: 135051 MB
+#-----------------------------------------------------------
+source build.tcl
+# set script_args [lrange $argv 0 end]
+# if {[llength $script_args] != 3} {
+#     puts "Usage: vivado -mode batch -source build.tcl -tclargs <KERNEL> <PROJ_ROOT> <PART_NAME>"
+#     puts "You passed [llength $script_args] arguments."
+#     exit 1
+# }
+# set KERNEL    [lindex $script_args 0]
+# set PROJ_ROOT [lindex $script_args 1]
+# set PART_NAME [lindex $script_args 2]
+# puts "DEBUG: PROJECT ROOT = '$PROJ_ROOT'"
+DEBUG: PROJECT ROOT = 'passthrough_rtl_prj'
+# puts "DEBUG: KERNEL = '$KERNEL'"
+DEBUG: KERNEL = 'passthrough_rtl'
+# puts "DEBUG: PART_NAME = '$PART_NAME'"
+DEBUG: PART_NAME = 'xcu250-figd2104-2L-e'
+# flush stdout
+# create_project -force $PROJ_ROOT $PROJ_ROOT -part xcu250-figd2104-2L-e
+# add_files "$PROJ_ROOT/${KERNEL}.v"
+# update_compile_order -fileset sources_1
+# ipx::package_project -root_dir $PROJ_ROOT/ip_repo -vendor user.org -library user -taxonomy /KernelIP -import_files -set_current false
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/xilinx/Vivado/2023.1/data/ip'.
+INFO: [IP_Flow 19-5107] Inferred bus interface 'm_axis' of definition 'xilinx.com:interface:axis:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 's_axis' of definition 'xilinx.com:interface:axis:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'ap_rst_n' of definition 'xilinx.com:signal:reset:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'ap_clk' of definition 'xilinx.com:signal:clock:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-4728] Bus Interface 'ap_rst_n': Added interface parameter 'POLARITY' with value 'ACTIVE_LOW'.
+INFO: [IP_Flow 19-4728] Bus Interface 'ap_clk': Added interface parameter 'ASSOCIATED_RESET' with value 'ap_rst_n'.
+WARNING: [IP_Flow 19-3158] Bus Interface 'm_axis': FREQ_HZ bus parameter missing from AXI interface when interface is not associated to a clock.
+WARNING: [IP_Flow 19-3158] Bus Interface 's_axis': FREQ_HZ bus parameter missing from AXI interface when interface is not associated to a clock.
+WARNING: [IP_Flow 19-5661] Bus Interface 'ap_clk' does not have any bus interfaces associated with it.
+WARNING: [IP_Flow 19-11770] Clock interface 'ap_clk' has no FREQ_HZ parameter.
+INFO: [IP_Flow 19-2181] Payment Required is not set for this core.
+INFO: [IP_Flow 19-2187] The Product Guide file is missing.
+# ipx::unload_core $PROJ_ROOT/ip_repo/component.xml
+# ipx::edit_ip_in_project -upgrade true -name tmp_edit_project -directory $PROJ_ROOT/tmp_edit_project $PROJ_ROOT/ip_repo/component.xml
+INFO: [IP_Flow 19-795] Syncing license key meta-data
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/xilinx/Vivado/2023.1/data/ip'.
+# set core [ipx::current_core]
+# set_property core_revision 2 $core
+# set_property sdx_kernel true $core
+# set_property sdx_kernel_type rtl $core
+# ipx::associate_bus_interfaces -busif s_axis -clock ap_clk $core
+INFO: [IP_Flow 19-4728] Bus Interface 'ap_clk': Added interface parameter 'ASSOCIATED_BUSIF' with value 's_axis'.
+# ipx::associate_bus_interfaces -busif m_axis -clock ap_clk $core
+# set s_axis_if [ipx::add_bus_interface s_axis $core]
+# set_property interface_mode slave $s_axis_if
+# set_property abstraction_type_vlnv xilinx.com:interface:axis_rtl:1.0 $s_axis_if
+# set_property bus_type_vlnv xilinx.com:interface:axis:1.0 $s_axis_if
+# set m_axis_if [ipx::add_bus_interface m_axis $core]
+# set_property interface_mode master $m_axis_if
+# set_property abstraction_type_vlnv xilinx.com:interface:axis_rtl:1.0 $m_axis_if
+# set_property bus_type_vlnv xilinx.com:interface:axis:1.0 $m_axis_if
+# ipx::save_core $core
+# ipx::unload_core $core
+# package_xo \
+#     -kernel_name $KERNEL \
+#     -ip_directory $PROJ_ROOT/ip_repo \
+#     -xo_path $KERNEL.xo \
+#     -ctrl_protocol ap_ctrl_none
+WARNING: [Vivado 12-4404] The CPU emulation flow in v++ is only supported when using a packaged XO file that contains C-model files, none were found.
+WARNING: [IP_Flow 19-11770] Clock interface 'ap_clk' has no FREQ_HZ parameter.
+INFO: [IP_Flow 19-2181] Payment Required is not set for this core.
+INFO: [IP_Flow 19-2187] The Product Guide file is missing.
+INFO: [Ipptcl 7-1486] check_integrity: Integrity check passed.
+# puts "XO generated: $KERNEL.xo"
+XO generated: passthrough_rtl.xo
+# exit
+INFO: [Common 17-206] Exiting Vivado at Wed Apr 29 14:24:08 2026...
